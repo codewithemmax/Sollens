@@ -19,8 +19,13 @@ allowed_origins = [
 ]
 
 # Add production origins from environment
-if os.getenv("ALLOWED_ORIGINS"):
-    allowed_origins.extend(os.getenv("ALLOWED_ORIGINS").split(","))
+cors_env = os.getenv("CORS_ORIGINS") or os.getenv("ALLOWED_ORIGINS")
+if cors_env:
+    try:
+        import json
+        allowed_origins.extend(json.loads(cors_env))
+    except Exception:
+        allowed_origins.extend([o.strip() for o in cors_env.split(",")])
 
 app.add_middleware(
     CORSMiddleware,
