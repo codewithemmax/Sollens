@@ -1,6 +1,6 @@
 "use client";
 
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton, WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { useMemo } from "react";
@@ -21,10 +21,12 @@ export default function WalletConnect({ children }: { children: React.ReactNode 
   return (
     <ConnectionProvider endpoint={RPC_URL}>
       <WalletProvider wallets={wallets} autoConnect>
-        <div className="flex justify-end p-4">
-          <WalletMultiButton />
-        </div>
-        {children}
+        <WalletModalProvider>
+          <div className="flex justify-end p-4">
+            <WalletMultiButton />
+          </div>
+          {children}
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );
